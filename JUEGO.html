@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CHIBARRAS - Juego Comprometido</title>
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=Rubik+Mono+One&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: url('https://media.giphy.com/media/ASd0Ukj0y3qMM/giphy.gif') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Comic Neue', cursive;
+      color: white;
+    }
+
+    h1,
+    #zonaJuego,
+    .pregunta {
+      display: none;
+    }
+
+    #iniciarJuego {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3rem;
+      padding: 1.5rem 3rem;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 2px 2px 10px #000;
+      font-family: 'Rubik Mono One', sans-serif;
+    }
+
+    h1 {
+      display: block;
+      font-family: 'Rubik Mono One', sans-serif;
+      font-size: 4rem;
+      text-transform: uppercase;
+      text-align: center;
+      letter-spacing: 1.5px;
+      text-shadow: 3px 3px 5px #000;
+      margin: 1rem 0;
+    }
+
+    button {
+      font-size: 1.5rem;
+      padding: 1rem 2rem;
+      background-color: #ff4081;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 2px 2px 10px #000;
+      margin: 0.5rem;
+      font-family: 'Comic Neue', cursive;
+    }
+
+    .pregunta {
+      margin: 2rem auto;
+      padding: 2rem;
+      max-width: 800px;
+      font-size: 2.5rem;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 16px;
+      border: 2px solid #fff;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+      font-family: 'Comic Neue', cursive;
+    }
+
+    #temporizador {
+      font-size: 2rem;
+      margin-top: 1rem;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      border: 2px solid #fff;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+
+    #contador {
+      font-size: 1.2rem;
+      margin-top: 1rem;
+    }
+
+    #zonaJuego {
+      display: none;
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    @keyframes zoomInFade {
+      0%   { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1);   opacity: 1; }
+    }
+    .animada {
+      animation: zoomInFade 0.6s ease-out;
+    }
+
+    @keyframes parpadeo {
+      0%,100% { opacity: 1; }
+      50%     { opacity: 0.3; }
+    }
+    .parpadea {
+      animation: parpadeo 1s infinite;
+    }
+  </style>
+</head>
+<body>
+  <h1>¡Bienvenido al Juego del 20 Aniversario de los Chibarras!</h1>
+
+  <button id="iniciarJuego">INICIAR JUEGO ▶️</button>
+
+  <!-- Contenedor centrado -->
+  <div id="zonaJuego">
+    <button id="btnPregunta">Dame una pregunta 🔥</button>
+    <button id="btnReiniciar">Reiniciar contador 🔄</button>
+    <div id="contador">Preguntas respondidas: 0</div>
+    <div id="temporizador">⏱️ Tiempo para responder: <span id="tiempo">20</span>s</div>
+  </div>
+
+  <div class="pregunta" id="pregunta"></div>
+
+  <script>
+    const btnIniciar = document.getElementById("iniciarJuego");
+    const zonaJuego = document.getElementById("zonaJuego");
+    const h1 = document.querySelector("h1");
+
+    btnIniciar.addEventListener("click", () => {
+      btnIniciar.style.display = "none";
+      h1.style.display = "block";
+      zonaJuego.style.display = "block";
+    });
+  </script>
+
+  <!-- Audios -->
+  <audio id="musicaInicio" loop>
+    <source src="inicio.mp3" type="audio/mp3">
+  </audio>
+  <audio id="musicaJuego" loop>
+    <source src="juego.mp3" type="audio/mp3">
+  </audio>
+  <audio id="sonidoBoton">
+    <source src="gracioso.mp3" type="audio/mp3">
+  </audio>
+  <audio id="alerta10">
+    <source src="alerta10.mp3" type="audio/mp3">
+  </audio>
+
+  <!-- Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    const preguntas = [
+      "¿A quién besarías ahora mismo si tuvieras que elegir?",
+      "¿Cuál es el secreto más loco que te ha pasado en estas fiestas?",
+      "¿Con quién de este grupo harías un viaje solo?",
+      "¿Te has liado con alguien este año en las fiestas?",
+      "¿Cuál ha sido tu mayor ridículo en la plaza?",
+      "¿Tendrías una cita con alguien 10 años mayor que tú del pueblo?",
+      "¿Quién es tu crush de las fiestas 2025?",
+      "¡Reto! Graba un vídeo bailando solo en la calle y enséñalo.",
+      "¿Con quién te irías a un rincón oscuro ahora mismo?",
+      "¿Has tenido sexo en un lugar público del pueblo? ¿Dónde?",
+      "¿Has tenido pensamientos sucios con alguien aquí presente? ¿Quién?",
+      "¿Quién te pone más de este grupo?",
+      "¿Alguna vez te pillaron desnudo en público? Cuenta eso.",
+      "¿Cuál es tu mayor fantasía y con quién la cumplirías?",
+      "¿Con quién no repetirías nunca una noche y por qué?",
+      "¿A quién te llevarías a una noche loca sin preguntas al día siguiente?",
+      "Elige a una persona presente y bebed un chupito juntos ahora mismo.",
+      "Elige a alguien del sexo contrario y dale un beso donde quieras.",
+      "Describe tu noche más salvaje (sin censura).",
+      "Haz un striptease de 5 segundos (o pasa un castigo).",
+	        "¿Con quién tendrías sexo esta noche si no hubiera consecuencias?",
+      "Cuenta una fantasía sexual que aún no hayas cumplido.",
+      "¿Qué prenda de ropa te quitarías ahora mismo sin dudarlo?",
+      "Elige a alguien para darte un masaje sexy... ahora.",
+      "Dale una prenda tuya a la persona a la que has leído su camiseta.",
+      "Hazte 6 flexiones ahora mismo, y cuenta en voz alta.",
+      "Hazte 5 burpees delante de todos.",
+      "Busca a Roberto Salvanés y dale una colleja (si consiente).",
+      "Invita a una copa al que le has leído la camiseta.",
+      "Haz el 'helicóptero' como Melody... sin romperte nada.",
+      "Dile algo al oído a quien quieras de la peña (que nadie más lo escuche).",
+      "Cántate una parte de una canción o pasa un castigo.",
+	  "Dale un cachete en el culo a quién quieras",
+	  "¿Qué prefieres, una cara bonita o un cuerpo sexy?",
+	  "¿Alguna vez has tenido sexo en la calle?",
+	  "¿Alguna vez has tenido relaciones por dinero o favores?",
+	  "¿Cuántas veces puedes tener sexo en una noche?",
+	  "Si pudieras ser del sexo opuesto durante un día entero, ¿a quién te follarías?",
+	  "¿Qué música pones mientras tienes relaciones?",
+	  "¿Te arrepientes de haberte acostado con alguien?",
+	  "¿Cuál ha sido tu peor experiencia en la cama?",
+	  "¿Qué piensas de hacer un trío?¿Has hecho uno?",
+	  "¿Harías un trío? ¿Con quién?",
+	  "¿Cuál ha sido el mensaje más guarro que has recibido? ¿Y el que has mandado?",
+	  "¿Alguna vez te han pillado mientras estabas en la cama con alguien?",
+	  "¿Te gusta sentirte dominado o prefieres dominar?",
+	  "¿Hay alguna postura sexual que jamás harías?",
+	  "¿Cuál es tu postura sexual favorita?",
+	  "¿Prefieres estar arriba o abajo?",
+	  "¿Puedes excitar a alguien sin tocarlo? Demuestralo",
+	  "¿Sexo por la mañana, durante el día o por la noche?",
+	  "¿Has sido infiel alguna vez?",
+	  "¿A qué edad perdiste la virginidad?",
+	  "¿Te gusta chupar los pies de tu pareja?",
+	  "¿Cuánto dinero pedirías por acostarte con alguien?",
+	  "¿Qué preliminares haces?",
+	  "¿Qué parte del cuerpo te gusta más que te toquen cuando tienes sexo?",
+	  "¿Alguna vez has tenido sexo borrach@ y has tenido que parar porque te estabas mareando?",
+	  "¿Has besado a más de dos personas en menos de 24 horas?",
+	  "¿Has besado a más de una persona en una noche?",
+	  "¿Cuál es para ti la duración ideal de los preliminares?",
+	  "Abre tu navegador y abre el historial, lee las últimas 5 busquedas",
+	  "Abre tu instagram y enseña lo que aparece en tu lupa",
+	  "¿Te gustaría que te atasen a la cama?",
+	  "¿Te gusta que te hagan sexo oral? ¿Y hacerlo tú?",
+	  "¿Cuánto medía el pene más grande que has tenido entre manos?",
+	  "¿Alguna vez te has sentido atraído por alguna de las personas que están aquí?",
+	  "Si pudieras viajar en el tiempo, ¿viajarías al pasado o al futuro?",
+	  "¿Cómo comprobarías si fue antes el huevo o la gallina?",
+	  "¿Qué es lo más loco que has hecho por amor?",
+	  "¿Qué parte de tu cuerpo te gusta más y por qué?",
+	  " ¿Qué es lo que te pone más nervioso?",
+	  "¿Qué es lo más raro que has comido en tu vida?",
+	  "¿Cuál es el peor regalo que has recibido?",
+	  "¿Los peces alguna vez tienen sed?",
+	  "¿Por qué 'todo junto' se escribe separado y 'separado' se escribe todo junto?",
+	  "Si el coco tiene pelo y leche, ¿por qué no se le considera un mamífero?",
+	  "¿De qué color son los espejos?",
+	  "Si se te cae el jabón al suelo, ¿está el suelo limpio o el jabón sucio?",
+	  "Si 'ordinario' es sinónimo de 'vulgar', ¿por qué 'extraordinario' no significa 'muy vulgar'?",
+	  "¿SE puede llorar debajo del agua?",
+	  "Si las tiendas de 24 horas están abiertas todo el día, ¿por qué las puertas tienen cerradura?",
+	  "¿Cuánto miden las altas horas de la noche?",
+	  "¿Por qué el pegamento no se pega al interior del bote?",
+	  "¿Por qué el sol aclara el pelo y oscurece la piel?",
+	  "Si las cucarachas pueden sobrevivir a un apocalipsis nuclear, ¿qué hay en los insecticidas?",
+	  "¿De qué color sería un camaleón si se mira al espejo?",
+	  "¿Por qué no hay comida para gatos con sabor a ratón?",
+	  "¿Has cometido alguna vez un delito?",
+	  "Qué prefieres ¿Hablar como Yoda o respirar como Darth Vader?",
+	  "Qué prefieres. ¿Ser pobre junto al amor de tu vida o ser multimillonario sin conocer el amor?",
+	  "¿Comer una caca con sabor a pastel o un pastel con sabor a caca?",
+	  "¿Qué es lo último que has fotografiado en tu móvil?",
+	  "Si solo pudieras decir una palabra hoy, ¿cuál sería?",
+	  "¿Qué es lo primero en que te fijas cuando conoces a una persona?",
+	  "¿Dónde preferirías vivir: en un parque zoológico o en un parque de atracciones?",
+	  "Termina la frase: lo que yo nunca haría por las noches es…",
+	  "¿A quién quieres más: a tu padre o a tu madre?",
+	  "¿Cuántas horas crees que pasas mirando tu teléfono móvil? Enséñalo",
+	  "¿Cuál es la cosa más espontánea que has hecho?",
+	  "¿Conoces algún trabalenguas? Demuestralo",
+	  "¿Cuál es tu helado favorito?",
+	  "Cuenta un chiste",
+	  "Quién es el que más te gusta de los Chibarras",
+	  "¿Tienes antecedentes penales?",
+	  "¿Prefieres sorprender a tus padres teniendo sexo o que ellos te sorprendan a ti?",
+	  "¿Prefieres mirar el historial de búsqueda en Internet de tu madre o el historial de búsqueda de tu padre?",
+	  "¿Prefieres renunciar a tu comida favorita para siempre o renunciar al sexo?",
+	  "¿Prefieres dejar de viajar o dejar de tener vacaciones?",
+	  "¿Prefieres no poder rascarte nunca un picor, o no poder reventarte nunca un grano?",
+	  "¿Prefieres no poder salir nunca durante el día o no poder salir nunca de noche?",
+	  "¿Prefieres hablar todos los idiomas o tener la capacidad de hablar con todos los animales?",
+	  "¿Prefieres cortarte con un papel cada vez que pasas una página o morderte la lengua cada vez que comes?",
+	  "¿Prefieres tener siempre los calcetines mojados o una pequeña piedra en el zapato?",
+	  "¿Prefieres estar atrapado en una isla desierta con alguien que nunca habla o con alguien que nunca se calla?",
+	  "¿Prefieres quedarte atrapado en un ascensor con tu ex o con tu pareja y su ex?",
+	  "¿Prefieres saber cuándo vas a morir o cómo vas a morir?",
+	  "¿Prefieres estar en un apocalipsis zombie o en un apocalipsis de robots?"
+    ];
+    const fondos = [
+      "https://media.giphy.com/media/3o6ZtpxSZbQRRnwCKQ/giphy.gif",
+      "https://media.giphy.com/media/xT9IgG50Fb7Mi0prBC/giphy.gif",
+      "https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif",
+      "https://media.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif",
+      "https://media.giphy.com/media/26tknCqiJrBQG6bxC/giphy.gif"
+    ];
+
+    let totalPreguntas = 0;
+    let tiempoRestante = 20;
+    let intervalo;
+
+    const inicioBtn    = document.getElementById("iniciarJuego");
+    const preguntaBtn  = document.getElementById("btnPregunta");
+    const reiniciarBtn = document.getElementById("btnReiniciar");
+    const titulo       = document.querySelector("h1");
+    const preguntaDiv  = document.getElementById("pregunta");
+    const contadorElem = document.getElementById("contador");
+    const timerElem    = document.getElementById("temporizador");
+    const musicaInicio = document.getElementById("musicaInicio");
+    const musicaJuego  = document.getElementById("musicaJuego");
+    const sonidoBoton  = document.getElementById("sonidoBoton");
+    const alerta10     = document.getElementById("alerta10");
+
+    window.addEventListener("load", () => {
+      inicioBtn.style.display = "block";
+    });
+
+    inicioBtn.addEventListener("click", () => {
+      sonidoBoton.play();
+      musicaInicio.play();
+
+      // mostrar elementos secundarios
+      inicioBtn.style.display    = "none";
+      titulo.style.display       = "block";
+      preguntaBtn.style.display  = "inline-block";
+      reiniciarBtn.style.display = "inline-block";
+      contadorElem.style.display = "block";
+      timerElem.style.display    = "inline-block";
+    });
+
+    preguntaBtn.addEventListener("click", () => {
+      sonidoBoton.play();
+      musicaInicio.pause();
+      musicaJuego.play();
+      mostrarPregunta();
+    });
+
+    reiniciarBtn.addEventListener("click", () => {
+      sonidoBoton.play();
+      totalPreguntas = 0;
+      contadorElem.textContent = "Preguntas respondidas: 0";
+    });
+
+    function mostrarPregunta() {
+      const texto = preguntas[Math.floor(Math.random() * preguntas.length)];
+      preguntaDiv.textContent = texto;
+      preguntaDiv.classList.add("animada");
+      preguntaDiv.style.display = "block";
+
+      document.body.style.backgroundImage =
+        `url('${fondos[Math.floor(Math.random() * fondos.length)]}')`;
+
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+
+      totalPreguntas++;
+      contadorElem.textContent = `Preguntas respondidas: ${totalPreguntas}`;
+      setTimeout(() => preguntaDiv.classList.remove("animada"), 700);
+
+      iniciarTemporizador();
+    }
+
+    function iniciarTemporizador() {
+      clearInterval(intervalo);
+      tiempoRestante = 20;
+      timerElem.textContent = `⏱ Tiempo para responder: ${tiempoRestante}s`;
+      timerElem.style.color = "white";
+      timerElem.classList.remove("parpadea");
+
+      intervalo = setInterval(() => {
+        tiempoRestante--;
+        timerElem.textContent = `⏱ Tiempo para responder: ${tiempoRestante}s`;
+
+        if (tiempoRestante === 10) {
+          alerta10.play();
+        }
+        if (tiempoRestante > 10) {
+          timerElem.style.color = "green";
+        } else if (tiempoRestante > 5) {
+          timerElem.style.color = "orange";
+          timerElem.classList.remove("parpadea");
+        } else {
+          timerElem.style.color = "red";
+          timerElem.classList.add("parpadea");
+        }
+        if (tiempoRestante <= 0) {
+          clearInterval(intervalo);
+          timerElem.textContent = "⏱ ¡Tiempo terminado!";
+          timerElem.style.color = "red";
+          timerElem.classList.remove("parpadea");
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
