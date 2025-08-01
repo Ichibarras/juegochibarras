@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CHIBARRAS - Juego Comprometido</title>
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=Rubik+Mono+One&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: url('https://media.giphy.com/media/ASd0Ukj0y3qMM/giphy.gif') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Comic Neue', cursive;
+      color: white;
+    }
+
+    h1,
+    #zonaJuego,
+    .pregunta {
+      display: none;
+    }
+
+    #iniciarJuego {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3rem;
+      padding: 1.5rem 3rem;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 2px 2px 10px #000;
+      font-family: 'Rubik Mono One', sans-serif;
+    }
+
+    h1 {
+      display: block;
+      font-family: 'Rubik Mono One', sans-serif;
+      font-size: 3rem;
+      text-transform: uppercase;
+      text-align: center;
+      letter-spacing: 1.5px;
+      text-shadow: 3px 3px 5px #000;
+      margin: 1rem 2rem;
+    }
+
+    button {
+      font-size: 1.5rem;
+      padding: 1rem 2rem;
+      background-color: #ff4081;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 2px 2px 10px #000;
+      margin: 0.5rem;
+      font-family: 'Comic Neue', cursive;
+    }
+
+    .pregunta {
+      margin: 2rem auto;
+      padding: 2rem;
+      max-width: 800px;
+      font-size: 2.5rem;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 16px;
+      border: 2px solid #fff;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+      font-family: 'Comic Neue', cursive;
+      position: relative;
+      z-index: 2;
+    }
+
+    #temporizador {
+      font-size: 2rem;
+      margin: 1rem auto;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      border: 2px solid #fff;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+      max-width: 800px;
+      text-align: center;
+    }
+
+    #contador {
+      font-size: 1.2rem;
+      margin-top: 1rem;
+    }
+
+    #zonaJuego {
+      display: none;
+      text-align: center;
+      margin-top: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    #muteButton {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 10;
+      font-size: 1.2rem;
+      padding: 0.8rem 1.5rem;
+      display: none;
+    }
+
+    @keyframes zoomInFade {
+      0%   { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1);   opacity: 1; }
+    }
+    .animada {
+      animation: zoomInFade 0.6s ease-out;
+    }
+
+    @keyframes parpadeo {
+      0%,100% { opacity: 1; }
+      50%     { opacity: 0.3; }
+    }
+    .parpadea {
+      animation: parpadeo 1s infinite;
+    }
+  </style>
+</head>
+<body>
+  <h1>¡Bienvenido al Juego del 20 Aniversario de los Chibarras!</h1>
+
+  <button id="iniciarJuego">INICIAR JUEGO ▶️</button>
+  <button id="muteButton">Mute 🔇</button>
+
+  <!-- Contenedor centrado -->
+  <div id="zonaJuego">
+    <div class="pregunta" id="pregunta"></div>
+    <div id="temporizador">⏱️ Tiempo para responder: <span id="tiempo">20</span>s</div>
+    <button id="btnPregunta">Dame una pregunta 🔥</button>
+    <button id="btnReiniciar">Reiniciar contador 🔄</button>
+    <div id="contador">Preguntas respondidas: 0</div>
+  </div>
+
+  <!-- Audios -->
+  <audio id="musicaInicio" loop>
+    <source src="inicio.mp3" type="audio/mp3">
+  </audio>
+  <audio id="musicaJuego" loop>
+    <source src="juego.mp3" type="audio/mp3">
+  </audio>
+  <audio id="sonidoBoton">
+    <source src="gracioso.mp3" type="audio/mp3">
+  </audio>
+  <audio id="alerta10">
+    <source src="alerta10.mp3" type="audio/mp3">
+  </audio>
+
+  <!-- Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    const preguntas = [
+      "¿A quién besarías ahora mismo si tuvieras que elegir?",
+      "¿Cuál es el secreto más loco que te ha pasado en estas fiestas?",
+      "¿Con quién de este grupo harías un viaje solo?",
+      "¿Te has liado con alguien este año en las fiestas?",
+      "¿Cuál ha sido tu mayor ridículo en la plaza?",
+      "¿Tendrías una cita con alguien 10 años mayor que tú del pueblo?",
+      "¿Quién es tu crush de las fiestas 2025?",
+      "¡Reto! Graba un vídeo bailando solo en la calle y enséñalo.",
+      "¿Con quién te irías a un rincón oscuro ahora mismo?",
+      "¿Has tenido sexo en un lugar público del pueblo? ¿Dónde?",
+      "¿Has tenido pensamientos sucios con alguien aquí presente? ¿Quién?",
+      "¿Quién te pone más de este grupo?",
+      "¿Alguna vez te pillaron desnudo en público? Cuenta eso.",
+      "¿Cuál es tu mayor fantasía y con quién la cumplirías?",
+      "¿Con quién no repetirías nunca una noche y por qué?",
+      "¿A quién te llevarías a una noche loca sin preguntas al día siguiente?",
+      "Elige a una persona presente y bebed un chupito juntos ahora mismo.",
+      "Elige a alguien del sexo contrario y dale un beso donde quieras.",
+      "Describe tu noche más salvaje (sin censura).",
+      "¿Prefieres cortarte con un papel cada vez que pasas una página o morderte la lengua cada vez que comes?",
+      "¿Prefieres tener siempre los calcetines mojados o una pequeña piedra en el zapato?",
+      "¿Prefieres estar atrapado en una isla desierta con alguien que nunca habla o con alguien que nunca se calla?",
+      "¿Prefieres quedarte atrapado en un ascensor con tu ex o con tu pareja y su ex?",
+      "¿Prefieres saber cuándo vas a morir o cómo vas a morir?",
+      "¿Prefieres estar en un apocalipsis zombie o en un apocalipsis de robots?"
+    ];
+    const fondos = [
+      "https://giphy.com/gifs/mediaset-gh-cara-2fNJwgqOaJfkuUISgB",
+      "https://media.giphy.com/media/xT9IgG50Fb7Mi0prBC/giphy.gif",
+      "https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif",
+      "https://media.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif",
+	  "https://giphy.com/gifs/watchallblk-double-cross-allblk-dc-M4yhdWpiRA3P8qeItw",
+	  "https://giphy.com/gifs/abelxanders-bailando-cubanito-havana-vieja-tHkkDcSoGddt5kS7hw",
+	  "https://giphy.com/gifs/Rumescu-rumescu-romescu-icat-KbkOMgrfV56Kv0vsqf",
+	  "https://giphy.com/gifs/mediaset-pregunta-belen-esteban-gh-vip-2ijQM5RA9Yizh9fR5T",
+	  "https://giphy.com/gifs/cbsnews-election-2020-cbs-news-second-presidential-debate-8v6Z3YyULB5Q0Skbac",
+	  "https://giphy.com/gifs/animalshouse-Y0tPk3dncALdnYluKq",
+      "https://media.giphy.com/media/26tknCqiJrBQG6bxC/giphy.gif"
+    ];
+
+    let totalPreguntas = 0;
+    let tiempoRestante = 20;
+    let intervalo;
+
+    const inicioBtn    = document.getElementById("iniciarJuego");
+    const preguntaBtn  = document.getElementById("btnPregunta");
+    const reiniciarBtn = document.getElementById("btnReiniciar");
+    const muteBtn      = document.getElementById("muteButton");
+    const titulo       = document.querySelector("h1");
+    const preguntaDiv  = document.getElementById("pregunta");
+    const contadorElem = document.getElementById("contador");
+    const timerElem    = document.getElementById("temporizador");
+    const musicaInicio = document.getElementById("musicaInicio");
+    const musicaJuego  = document.getElementById("musicaJuego");
+    const sonidoBoton  = document.getElementById("sonidoBoton");
+    const alerta10     = document.getElementById("alerta10");
+
+    window.addEventListener("load", () => {
+      inicioBtn.style.display = "block";
+    });
+
+    inicioBtn.addEventListener("click", () => {
+      sonidoBoton.play();
+      musicaInicio.play();
+      inicioBtn.style.display    = "none";
+      titulo.style.display       = "block";
+      titulo.style.marginTop     = "3rem";
+      zonaJuego.style.display    = "block";
+      preguntaBtn.style.display  = "inline-block";
+      reiniciarBtn.style.display = "inline-block";
+      contadorElem.style.display = "block";
+      timerElem.style.display    = "block";
+      muteBtn.style.display      = "block";
+    });
+
+    preguntaBtn.addEventListener("click", () => {
+      sonidoBoton.play();
+      musicaInicio.pause();
+      musicaJuego.play();
+      mostrarPregunta();
+    });
+
+    reiniciarBtn.addEventListener("click", () => {
+      sonidoBoton.play();
+      totalPreguntas = 0;
+      contadorElem.textContent = "Preguntas respondidas: 0";
+    });
+
+    muteBtn.addEventListener("click", () => {
+      sonidoBoton.play();
+      if (musicaJuego.muted) {
+        musicaJuego.muted = false;
+        muteBtn.textContent = "Mute 🔇";
+      } else {
+        musicaJuego.muted = true;
+        muteBtn.textContent = "Unmute 🔊";
+      }
+    });
+
+    function mostrarPregunta() {
+      const texto = preguntas[Math.floor(Math.random() * preguntas.length)];
+      preguntaDiv.textContent = texto;
+      preguntaDiv.classList.add("animada");
+      preguntaDiv.style.display = "block";
+
+      document.body.style.backgroundImage =
+        `url('${fondos[Math.floor(Math.random() * fondos.length)]}')`;
+
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+
+      totalPreguntas++;
+      contadorElem.textContent = `Preguntas respondidas: ${totalPreguntas}`;
+      setTimeout(() => preguntaDiv.classList.remove("animada"), 700);
+
+      iniciarTemporizador();
+    }
+
+    function iniciarTemporizador() {
+      clearInterval(intervalo);
+      tiempoRestante = 20;
+      timerElem.textContent = `⏱ Tiempo para responder: ${tiempoRestante}s`;
+      timerElem.style.color = "white";
+      timerElem.classList.remove("parpadea");
+
+      intervalo = setInterval(() => {
+        tiempoRestante--;
+        timerElem.textContent = `⏱ Tiempo para responder: ${tiempoRestante}s`;
+
+        if (tiempoRestante === 10) {
+          alerta10.play();
+        }
+        if (tiempoRestante > 10) {
+          timerElem.style.color = "green";
+        } else if (tiempoRestante > 5) {
+          timerElem.style.color = "orange";
+          timerElem.classList.remove("parpadea");
+        } else {
+          timerElem.style.color = "red";
+          timerElem.classList.add("parpadea");
+        }
+        if (tiempoRestante <= 0) {
+          clearInterval(intervalo);
+          timerElem.textContent = "⏱ ¡Tiempo terminado!";
+          timerElem.style.color = "red";
+          timerElem.classList.remove("parpadea");
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
