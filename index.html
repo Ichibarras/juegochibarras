@@ -18,7 +18,8 @@
 
     h1,
     #zonaJuego,
-    .pregunta {
+    .pregunta,
+    #empezarBtn {
       display: none;
     }
 
@@ -111,6 +112,17 @@
       display: none;
     }
 
+    #empezarBtn {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 10;
+      font-size: 1.2rem;
+      padding: 0.8rem 1.5rem;
+      background-color: #2196F3;
+      display: none;
+    }
+
     @keyframes zoomInFade {
       0%   { transform: scale(0.5); opacity: 0; }
       100% { transform: scale(1);   opacity: 1; }
@@ -151,7 +163,7 @@
         display: block;
         margin: 0.5rem auto;
       }
-      #muteButton {
+      #muteButton, #empezarBtn {
         font-size: 1rem;
         padding: 0.6rem 1rem;
       }
@@ -170,6 +182,7 @@
 
   <button id="iniciarJuego">INICIAR JUEGO ▶️</button>
   <button id="muteButton">Mute 🔇</button>
+  <button id="empezarBtn">Empezar 🏠</button>
 
   <!-- Contenedor centrado -->
   <div id="zonaJuego">
@@ -210,25 +223,124 @@
       "¿Has tenido sexo en un lugar público del pueblo? ¿Dónde?",
       "¿Has tenido pensamientos sucios con alguien aquí presente? ¿Quién?",
       "¿Quién te pone más de este grupo?",
-      "¿Alguna vez te pillaron desnudo en público? Conta eso.",
+      "¿Alguna vez te pillaron desnudo en público? Cuenta eso.",
       "¿Cuál es tu mayor fantasía y con quién la cumplirías?",
       "¿Con quién no repetirías nunca una noche y por qué?",
       "¿A quién te llevarías a una noche loca sin preguntas al día siguiente?",
       "Elige a una persona presente y bebed un chupito juntos ahora mismo.",
       "Elige a alguien del sexo contrario y dale un beso donde quieras.",
       "Describe tu noche más salvaje (sin censura).",
-      "¿Prefieres cortarte con un papel cada vez que pasas una página o morderte la lengua cada vez que comes?",
-      "¿Prefieres tener siempre los calcetines mojados o una pequeña piedra en el zapato?",
-      "¿Prefieres estar atrapado en una isla desierta con alguien que nunca habla o con alguien que nunca se calla?",
-      "¿Prefieres quedarte atrapado en un ascensor con tu ex o con tu pareja y su ex?",
-      "¿Prefieres saber cuándo vas a morir o cómo vas a morir?",
-      "¿Prefieres estar en un apocalipsis zombie o en un apocalipsis de robots?"
+      "Haz un striptease de 5 segundos (o pasa un castigo).",
+	  "¿Con quién tendrías sexo esta noche si no hubiera consecuencias?",
+      "Cuenta una fantasía sexual que aún no hayas cumplido.",
+      "¿Qué prenda de ropa te quitarías ahora mismo sin dudarlo?",
+      "Elige a alguien para darte un masaje sexy... ahora.",
+      "Dale una prenda tuya a la persona a la que has leído su camiseta.",
+      "Hazte 6 flexiones ahora mismo, y cuenta en voz alta.",
+      "Hazte 5 burpees delante de todos.",
+      "Busca a Roberto Salvanés y dale una colleja (si consiente).",
+      "Invita a una copa al que le has leído la camiseta.",
+      "Haz el 'helicóptero' como Melody... sin romperte nada.",
+      "Dile algo al oído a quien quieras de la peña (que nadie más lo escuche).",
+      "Cántate una parte de una canción o pasa un castigo.",
+	  "Dale un cachete en el culo a quién quieras",
+	  "¿Qué prefieres, una cara bonita o un cuerpo sexy?",
+	  "¿Alguna vez has tenido sexo en la calle?",
+	  "¿Alguna vez has tenido relaciones por dinero o favores?",
+	  "¿Cuántas veces puedes tener sexo en una noche?",
+	  "Si pudieras ser del sexo opuesto durante un día entero, ¿a quién te follarías?",
+	  "¿Qué música pones mientras tienes relaciones?",
+	  "¿Te arrepientes de haberte acostado con alguien?",
+	  "¿Cuál ha sido tu peor experiencia en la cama?",
+	  "¿Qué piensas de hacer un trío?¿Has hecho uno?",
+	  "¿Harías un trío? ¿Con quién?",
+	  "¿Cuál ha sido el mensaje más guarro que has recibido? ¿Y el que has mandado?",
+	  "¿Alguna vez te han pillado mientras estabas en la cama con alguien?",
+	  "¿Te gusta sentirte dominado o prefieres dominar?",
+	  "¿Hay alguna postura sexual que jamás harías?",
+	  "¿Cuál es tu postura sexual favorita?",
+	  "¿Prefieres estar arriba o abajo?",
+	  "¿Puedes excitar a alguien sin tocarlo? Demuestralo",
+	  "¿Sexo por la mañana, durante el día o por la noche?",
+	  "¿Has sido infiel alguna vez?",
+	  "¿A qué edad perdiste la virginidad?",
+	  "¿Te gusta chupar los pies de tu pareja?",
+	  "¿Cuánto dinero pedirías por acostarte con alguien?",
+	  "¿Qué preliminares haces?",
+	  "¿Qué parte del cuerpo te gusta más que te toquen cuando tienes sexo?",
+	  "¿Alguna vez has tenido sexo borrach@ y has tenido que parar porque te estabas mareando?",
+	  "¿Has besado a más de dos personas en menos de 24 horas?",
+	  "¿Has besado a más de una persona en una noche?",
+	  "¿Cuál es para ti la duración ideal de los preliminares?",
+	  "Abre tu navegador y abre el historial, lee las últimas 5 busquedas",
+	  "Abre tu instagram y enseña lo que aparece en tu lupa",
+	  "¿Te gustaría que te atasen a la cama?",
+	  "¿Te gusta que te hagan sexo oral? ¿Y hacerlo tú?",
+	  "¿Cuánto medía el pene más grande que has tenido entre manos?",
+	  "¿Alguna vez te has sentido atraído por alguna de las personas que están aquí?",
+	  "Si pudieras viajar en el tiempo, ¿viajarías al pasado o al futuro?",
+	  "¿Cómo comprobarías si fue antes el huevo o la gallina?",
+	  "¿Qué es lo más loco que has hecho por amor?",
+	  "¿Qué parte de tu cuerpo te gusta más y por qué?",
+	  " ¿Qué es lo que te pone más nervioso?",
+	  "¿Qué es lo más raro que has comido en tu vida?",
+	  "¿Cuál es el peor regalo que has recibido?",
+	  "¿Los peces alguna vez tienen sed?",
+	  "¿Por qué 'todo junto' se escribe separado y 'separado' se escribe todo junto?",
+	  "Si el coco tiene pelo y leche, ¿por qué no se le considera un mamífero?",
+	  "¿De qué color son los espejos?",
+	  "Si se te cae el jabón al suelo, ¿está el suelo limpio o el jabón sucio?",
+	  "Si 'ordinario' es sinónimo de 'vulgar', ¿por qué 'extraordinario' no significa 'muy vulgar'?",
+	  "¿SE puede llorar debajo del agua?",
+	  "Si las tiendas de 24 horas están abiertas todo el día, ¿por qué las puertas tienen cerradura?",
+	  "¿Cuánto miden las altas horas de la noche?",
+	  "¿Por qué el pegamento no se pega al interior del bote?",
+	  "¿Por qué el sol aclara el pelo y oscurece la piel?",
+	  "Si las cucarachas pueden sobrevivir a un apocalipsis nuclear, ¿qué hay en los insecticidas?",
+	  "¿De qué color sería un camaleón si se mira al espejo?",
+	  "¿Por qué no hay comida para gatos con sabor a ratón?",
+	  "¿Has cometido alguna vez un delito?",
+	  "Qué prefieres ¿Hablar como Yoda o respirar como Darth Vader?",
+	  "Qué prefieres. ¿Ser pobre junto al amor de tu vida o ser multimillonario sin conocer el amor?",
+	  "¿Comer una caca con sabor a pastel o un pastel con sabor a caca?",
+	  "¿Qué es lo último que has fotografiado en tu móvil?",
+	  "Si solo pudieras decir una palabra hoy, ¿cuál sería?",
+	  "¿Qué es lo primero en que te fijas cuando conoces a una persona?",
+	  "¿Dónde preferirías vivir: en un parque zoológico o en un parque de atracciones?",
+	  "Termina la frase: lo que yo nunca haría por las noches es…",
+	  "¿A quién quieres más: a tu padre o a tu madre?",
+	  "¿Cuántas horas crees que pasas mirando tu teléfono móvil? Enséñalo",
+	  "¿Cuál es la cosa más espontánea que has hecho?",
+	  "¿Conoces algún trabalenguas? Demuestralo",
+	  "¿Cuál es tu helado favorito?",
+	  "Cuenta un chiste",
+	  "Quién es el que más te gusta de los Chibarras",
+	  "¿Tienes antecedentes penales?",
+	  "¿Prefieres sorprender a tus padres teniendo sexo o que ellos te sorprendan a ti?",
+	  "¿Prefieres mirar el historial de búsqueda en Internet de tu madre o el historial de búsqueda de tu padre?",
+	  "¿Prefieres renunciar a tu comida favorita para siempre o renunciar al sexo?",
+	  "¿Prefieres dejar de viajar o dejar de tener vacaciones?",
+	  "¿Prefieres no poder rascarte nunca un picor, o no poder reventarte nunca un grano?",
+	  "¿Prefieres no poder salir nunca durante el día o no poder salir nunca de noche?",
+	  "¿Prefieres hablar todos los idiomas o tener la capacidad de hablar con todos los animales?",
+	  "¿Prefieres cortarte con un papel cada vez que pasas una página o morderte la lengua cada vez que comes?",
+	  "¿Prefieres tener siempre los calcetines mojados o una pequeña piedra en el zapato?",
+	  "¿Prefieres estar atrapado en una isla desierta con alguien que nunca habla o con alguien que nunca se calla?",
+	  "¿Prefieres quedarte atrapado en un ascensor con tu ex o con tu pareja y su ex?",
+	  "¿Prefieres saber cuándo vas a morir o cómo vas a morir?",
+	  "¿Prefieres estar en un apocalipsis zombie o en un apocalipsis de robots?"
     ];
     const fondos = [
-      "https://media.giphy.com/media/3o6ZtpxSZbQRRnwCKQ/giphy.gif",
+      "https://giphy.com/gifs/mediaset-gh-cara-2fNJwgqOaJfkuUISgB",
       "https://media.giphy.com/media/xT9IgG50Fb7Mi0prBC/giphy.gif",
       "https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif",
       "https://media.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif",
+	  "https://giphy.com/gifs/watchallblk-double-cross-allblk-dc-M4yhdWpiRA3P8qeItw",
+	  "https://giphy.com/gifs/abelxanders-bailando-cubanito-havana-vieja-tHkkDcSoGddt5kS7hw",
+	  "https://giphy.com/gifs/Rumescu-rumescu-romescu-icat-KbkOMgrfV56Kv0vsqf",
+	  "https://giphy.com/gifs/mediaset-pregunta-belen-esteban-gh-vip-2ijQM5RA9Yizh9fR5T",
+	  "https://giphy.com/gifs/cbsnews-election-2020-cbs-news-second-presidential-debate-8v6Z3YyULB5Q0Skbac",
+	  "https://giphy.com/gifs/animalshouse-Y0tPk3dncALdnYluKq",
       "https://media.giphy.com/media/26tknCqiJrBQG6bxC/giphy.gif"
     ];
 
@@ -240,6 +352,7 @@
     const preguntaBtn  = document.getElementById("btnPregunta");
     const reiniciarBtn = document.getElementById("btnReiniciar");
     const muteBtn      = document.getElementById("muteButton");
+    const empezarBtn   = document.getElementById("empezarBtn");
     const titulo       = document.querySelector("h1");
     const preguntaDiv  = document.getElementById("pregunta");
     const contadorElem = document.getElementById("contador");
@@ -265,6 +378,7 @@
       contadorElem.style.display = "block";
       timerElem.style.display    = "block";
       muteBtn.style.display      = "block";
+      empezarBtn.style.display   = "block";
     });
 
     preguntaBtn.addEventListener("click", () => {
@@ -289,6 +403,19 @@
         musicaJuego.muted = true;
         muteBtn.textContent = "Unmute 🔊";
       }
+    });
+
+    empezarBtn.addEventListener("click", () => {
+      sonidoBoton.play();
+      musicaJuego.pause();
+      musicaInicio.play();
+      clearInterval(intervalo);
+      inicioBtn.style.display    = "block";
+      titulo.style.display       = "none";
+      zonaJuego.style.display    = "none";
+      muteBtn.style.display      = "none";
+      empezarBtn.style.display   = "none";
+      document.body.style.backgroundImage = "url('https://media.giphy.com/media/ASd0Ukj0y3qMM/giphy.gif')";
     });
 
     function mostrarPregunta() {
