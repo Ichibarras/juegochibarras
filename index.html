@@ -10,8 +10,8 @@
       background: url('https://media.giphy.com/media/ASd0Ukj0y3qMM/giphy.gif') no-repeat center center fixed;
       background-size: cover;
       margin: 0;
-      height: 100vh;
-      overflow: hidden;
+      min-height: 100vh;
+      overflow-y: auto;
       font-family: 'Comic Neue', cursive;
       color: white;
     }
@@ -126,10 +126,47 @@
     .parpadea {
       animation: parpadeo 1s infinite;
     }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.8rem;
+        margin: 1rem 1rem;
+        margin-top: 1.5rem;
+      }
+      .pregunta {
+        font-size: 1.6rem;
+        margin: 1rem auto;
+        padding: 1rem;
+        max-width: 90%;
+      }
+      #temporizador {
+        font-size: 1.4rem;
+        margin: 0.5rem auto;
+        padding: 0.8rem 1rem;
+        max-width: 90%;
+      }
+      #btnPregunta, #btnReiniciar {
+        font-size: 1.2rem;
+        padding: 0.8rem 1.5rem;
+        display: block;
+        margin: 0.5rem auto;
+      }
+      #muteButton {
+        font-size: 1rem;
+        padding: 0.6rem 1rem;
+      }
+      #iniciarJuego {
+        font-size: 2rem;
+        padding: 1rem 2rem;
+      }
+      #contador {
+        font-size: 1rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>¡Bienvenido al Juego Oficial del 20 Aniversario de los Chibarras!</h1>
+  <h1>¡Bienvenido al Juego del 20 Aniversario de los Chibarras!</h1>
 
   <button id="iniciarJuego">INICIAR JUEGO ▶️</button>
   <button id="muteButton">Mute 🔇</button>
@@ -173,7 +210,7 @@
       "¿Has tenido sexo en un lugar público del pueblo? ¿Dónde?",
       "¿Has tenido pensamientos sucios con alguien aquí presente? ¿Quién?",
       "¿Quién te pone más de este grupo?",
-      "¿Alguna vez te pillaron desnudo en público? Cuenta eso.",
+      "¿Alguna vez te pillaron desnudo en público? Conta eso.",
       "¿Cuál es tu mayor fantasía y con quién la cumplirías?",
       "¿Con quién no repetirías nunca una noche y por qué?",
       "¿A quién te llevarías a una noche loca sin preguntas al día siguiente?",
@@ -188,16 +225,10 @@
       "¿Prefieres estar en un apocalipsis zombie o en un apocalipsis de robots?"
     ];
     const fondos = [
-      "https://giphy.com/gifs/mediaset-gh-cara-2fNJwgqOaJfkuUISgB",
+      "https://media.giphy.com/media/3o6ZtpxSZbQRRnwCKQ/giphy.gif",
       "https://media.giphy.com/media/xT9IgG50Fb7Mi0prBC/giphy.gif",
       "https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif",
       "https://media.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif",
-	  "https://giphy.com/gifs/watchallblk-double-cross-allblk-dc-M4yhdWpiRA3P8qeItw",
-	  "https://giphy.com/gifs/abelxanders-bailando-cubanito-havana-vieja-tHkkDcSoGddt5kS7hw",
-	  "https://giphy.com/gifs/Rumescu-rumescu-romescu-icat-KbkOMgrfV56Kv0vsqf",
-	  "https://giphy.com/gifs/mediaset-pregunta-belen-esteban-gh-vip-2ijQM5RA9Yizh9fR5T",
-	  "https://giphy.com/gifs/cbsnews-election-2020-cbs-news-second-presidential-debate-8v6Z3YyULB5Q0Skbac",
-	  "https://giphy.com/gifs/animalshouse-Y0tPk3dncALdnYluKq",
       "https://media.giphy.com/media/26tknCqiJrBQG6bxC/giphy.gif"
     ];
 
@@ -227,7 +258,7 @@
       musicaInicio.play();
       inicioBtn.style.display    = "none";
       titulo.style.display       = "block";
-      titulo.style.marginTop     = "3rem";
+      titulo.style.marginTop     = "1.5rem";
       zonaJuego.style.display    = "block";
       preguntaBtn.style.display  = "inline-block";
       reiniciarBtn.style.display = "inline-block";
